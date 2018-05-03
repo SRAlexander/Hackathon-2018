@@ -5,7 +5,6 @@ import { HomeComponent } from "./pages/home/home.component";
 import { DetailsComponent } from "./pages/search/details/details.component";
 import { ImageComponent } from "./pages/search/image/image.component";
 import { CriminalViewComponent } from "./pages/criminal-view/criminal-view.component";
-import { DetailsComponent } from './pages/search/details/details.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
