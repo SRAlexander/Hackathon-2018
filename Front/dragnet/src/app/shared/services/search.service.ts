@@ -24,9 +24,9 @@ export class SearchService {
    searchByDetails(details : SearchDetails){
     let body = JSON.stringify(SearchDetails);
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
+    let options = { headers: headers, search : body };
 
-    return this._http.post<any>(this._apiLocation + "detailsResults", body, options)
+    return this._http.get<any>(this._apiLocation + "detailResults", options)
       .do(data => {
         //TODO What?
       })
