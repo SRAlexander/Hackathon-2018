@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SearchDetails } from './searchDetailsClass';
+import { SearchDetails } from '../../../shared/models/input/searchDetailsClass';
 
 @Component({
   selector: 'dn-details',

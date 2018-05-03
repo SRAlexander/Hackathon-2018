@@ -11,6 +11,13 @@ import { CriminalViewComponent } from './pages/criminal-view/criminal-view.compo
 import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './pages/home/home.component';
 
+import { APP_INITIALIZER } from '@angular/core';
+import { AppConfig }       from './app.config';
+
+function initConfig(config: AppConfig){
+  return () => config.load() 
+ }
+
 
 @NgModule({
   declarations: [
@@ -26,7 +33,10 @@ import { HomeComponent } from './pages/home/home.component';
     SharedModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    AppConfig,
+    { provide: APP_INITIALIZER, useFactory: initConfig, deps: [AppConfig], multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
