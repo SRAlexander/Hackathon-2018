@@ -10,6 +10,7 @@ import { ResultsComponent } from './pages/search/results/results.component';
 import { CriminalViewComponent } from './pages/criminal-view/criminal-view.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './pages/home/home.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { APP_INITIALIZER } from '@angular/core';
 import { AppConfig }       from './app.config';
@@ -31,7 +32,8 @@ function initConfig(config: AppConfig){
   ],
   imports: [
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFontAwesomeModule
   ],
   providers: [
     AppConfig,
