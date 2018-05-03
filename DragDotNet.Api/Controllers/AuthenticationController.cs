@@ -7,7 +7,7 @@
     public class AuthenticationController : Controller
     {
         [HttpPost]
-        [Route("log-in")]
+        [Route("login")]
         public IActionResult LogIn(string name)
         {
             CurrentUser.Username = name;
