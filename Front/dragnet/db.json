@@ -1,0 +1,25 @@
+{
+  "detailresults": [
+    {
+      "id": 0,
+      "name": "Bob",
+      "dob": "3/5/2018",
+      "gender": "Male",
+      "address": "1 Bob Way"
+    },
+    {
+      "id": 0,
+      "name": "Jane",
+      "dob": "3/5/2018",
+      "gender": "Female",
+      "address": "1 Jane Way"
+    },
+    {
+      "id": 0,
+      "name": "Harry",
+      "dob": "3/5/2018",
+      "gender": "Male",
+      "address": "1 Harry Way"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">
+      Identifiable Details
+    </h5>
+  </div>
+
+  <div class="card-body">
+    <form novalidate #formPI="ngForm" (submit)="submit()"> 
+      <!-- // #formPI="ngForm" (submit)="ConfirmAndComplete()" -->
+      <div class="row spacer">
+        <div class="col-4">
+          <span>
+            <b>Firstname:</b>
+          </span>
+        </div>
+        <div class="col-8">
+          <input type="text" class="form-control" name="firstname" [(ngModel)]="model.firstname">
+        </div>
+      </div>
+
+      <div class="row spacer">
+        <div class="col-4">
+          <span>
+            <b>Surname:</b>
+          </span>
+        </div>
+        <div class="col-8">
+          <input type="text" class="form-control" name="surname" [(ngModel)]="model.surname">
+        </div>
+      </div>
+
+      <div class="row spacer">
+        <div class="col-4">
+          <span>
+            <b>DOB:</b>
+          </span>
+        </div>
+        <div class="col-8">
+          <!-- <span>{{model.title}}</span> -->
+          <input type="text" class="form-control" name="dob" [(ngModel)]="model.dob">
+        </div>
+      </div>
+
+      <div class="row spacer">
+        <div class="col-4">
+          <span>
+            <b>Sex</b>
+          </span>
+        </div>
+        <div class="col-8">
+          <!-- <span>{{model.title}}</span> -->
+          <input type="text" class="form-control" name="sex" [(ngModel)]="model.sex">
+        </div>
+      </div>
+
+      <div class="row spacer">
+        <div class="col-4">
+          <span>
+            <b>Postcode:</b>
+          </span>
+        </div>
+        <div class="col-8">
+          <!-- <span>{{model.title}}</span> -->
+          <input type="text" class="form-control" name="postcode" [(ngModel)]="model.postcode">
+        </div>
+      </div>
+
+      <button class="spacer btn btn-primary btn-block">Search</button>
+    </form>
+  </div>
