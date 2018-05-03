@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchDetails } from './searchDetailsClass';
 
 @Component({
   selector: 'dn-details',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailsComponent implements OnInit {
 
+  model : SearchDetails = new SearchDetails();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  submit() {
+    var z  = "here";
+    console.log("submitted")
+    console.log(this.model.surname)
   }
 
 }
