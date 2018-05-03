@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginComponent },
   { path: "detailsSearch", component: DetailsComponent },
+  { path: 'detailsSearch', component: DetailsComponent},
   { path: "imageSearch", component: ImageComponent },
   { path: "criminalView/:personId/:personGuid", component: CriminalViewComponent }
 ];
