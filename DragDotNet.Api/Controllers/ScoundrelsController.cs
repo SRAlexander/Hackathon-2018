@@ -1,5 +1,6 @@
 ﻿namespace DragDotNet.Api.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,24 @@
 
             var scoundrels = await _imageIdentificationClient.FindScoundrels(imageDetails.base64String);
             return Ok(scoundrels);
+        }
+
+        [HttpGet]
+        [Route("get-scoundrel")]
+        public async Task<IActionResult> GetScoundrel(string policeId, string faceId)
+        {
+            var incidents = await _policeApiClient.GetRelatedPersonIncidents(policeId);
+            var scoundrel = await _policeApiClient.GetScoundrel(policeId);
+            return Ok(new ScoundrelDetailedInfo
+            {
+                DateOfBirth = scoundrel.DateOfBirth,
+                FirstName = scoundrel.FirstName,
+                Gender = scoundrel.Gender,
+                IdentifyGuid = scoundrel.IdentifyGuid,
+                LastName = scoundrel.LastName,
+                Incidents = incidents,
+                Photo = scoundrel.Photo
+            });
         }
     }
 }
