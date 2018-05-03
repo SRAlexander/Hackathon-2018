@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="DragDotNet.Api" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Connected Services" t="Include">
+          <e p="Application Insights" t="Include">
+            <e p="ConnectedService.json" t="Include" />
+          </e>
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="AuthenticationController.cs" t="Include" />
+          <e p="FindScoundrelModel.cs" t="Include" />
+          <e p="ImagePostModel.cs" t="Include" />
+          <e p="ScoundrelsController.cs" t="Include" />
+        </e>
+        <e p="CurrentUser.cs" t="Include" />
+        <e p="DragDotNet.Api.csproj" t="IncludeRecursive" />
+        <e p="ImageIdentifyApi.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.0" t="Include">
+              <e p="DragDotNet.Api.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="PoliceApiClient.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="ScoundrelInfo.cs" t="Include" />
+        <e p="Startup.cs" t="Include" />
+        <e p="Tests" t="Include">
+          <e p="PoliceClientApiTests.cs" t="Include" />
+        </e>
+        <e p="wwwroot" t="Include" />
+      </e>
+      <e p="DragDotNet.Api.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2017.3/resharper-host/local/Transient/ReSharperHost/v11/SolutionCaches/_DragDotNet.Api.-1317765294.00" t="ExcludeRecursive" />
+  </component>
+</project>
