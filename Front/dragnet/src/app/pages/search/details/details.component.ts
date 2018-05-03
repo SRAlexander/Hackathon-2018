@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchDetails } from '../../../shared/models/input/searchDetailsClass';
+import { SearchService } from '../../../shared/services/search.service';
 
 @Component({
   selector: 'dn-details',
@@ -10,15 +11,31 @@ export class DetailsComponent implements OnInit {
 
   model : SearchDetails = new SearchDetails();
 
-  constructor() { }
+  constructor(private _searchService : SearchService) { 
+
+  }
 
   ngOnInit() {
   }
 
   submit() {
-    var z  = "here";
-    console.log("submitted")
-    console.log(this.model.surname)
+    this._searchService.searchByDetails(null)
+    .subscribe(
+      response => {
+        if (response.length == 1 ){
+          //redirect to person
+        }
+
+        if (response.length > 1){
+          //redirect to results view
+        }
+
+        console.log("No results")
+      },
+      error => {
+        console.log("Error on details search");
+      }
+    );
   }
 
 }
