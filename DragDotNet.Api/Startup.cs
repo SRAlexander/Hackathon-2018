@@ -1,4 +1,6 @@
-﻿namespace DragDotNet.Api
+﻿using Swashbuckle.AspNetCore.Swagger;
+
+namespace DragDotNet.Api
 {
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
@@ -20,6 +22,10 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,9 +43,18 @@
                 builder.AllowAnyOrigin();
                 builder.AllowCredentials();
             });
+            
+            app.UseSwagger();
 
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
+            
             app.UseMvcWithDefaultRoute();
-
+            app.UseApplicationInsightsExceptionTelemetry()
         }
     }
 }

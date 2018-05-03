@@ -6,6 +6,7 @@
     [Route("api/authentication")]
     public class AuthenticationController : Controller
     {
+        [HttpPost]
         [Route("log-in")]
         public IActionResult LogIn(string name)
         {
