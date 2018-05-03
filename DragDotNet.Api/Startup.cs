@@ -54,7 +54,7 @@ namespace DragDotNet.Api
             });
             
             app.UseMvcWithDefaultRoute();
-
+            app.UseApplicationInsightsExceptionTelemetry()
         }
     }
 }
