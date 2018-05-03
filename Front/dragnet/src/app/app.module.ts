@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +8,8 @@ import { ImageComponent } from './pages/search/image/image.component';
 import { DetailsComponent } from './pages/search/details/details.component';
 import { ResultsComponent } from './pages/search/results/results.component';
 import { CriminalViewComponent } from './pages/criminal-view/criminal-view.component';
+import { SharedModule } from './shared/shared.module';
+import { HomeComponent } from './pages/home/home.component';
 
 
 @NgModule({
@@ -18,10 +19,11 @@ import { CriminalViewComponent } from './pages/criminal-view/criminal-view.compo
     ImageComponent,
     DetailsComponent,
     ResultsComponent,
-    CriminalViewComponent
+    CriminalViewComponent,
+    HomeComponent
   ],
   imports: [
-    BrowserModule,
+    SharedModule,
     AppRoutingModule
   ],
   providers: [],
