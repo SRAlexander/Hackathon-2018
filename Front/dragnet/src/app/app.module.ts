@@ -34,7 +34,7 @@ function initConfig(config: AppConfig){
   imports: [
     SharedModule,
     AppRoutingModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
     NgxSpinnerModule
   ],
   providers: [
