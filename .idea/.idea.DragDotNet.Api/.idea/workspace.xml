@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="473fc25e-5c29-4790-8112-d3caa03aa3df" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/DragDotNet.Api/Controllers/ImagePostModel.cs" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" />
-      <change beforePath="$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs" afterPath="$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs" />
-      <change beforePath="$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" afterPath="$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" />
-      <change beforePath="$PROJECT_DIR$/DragDotNet.Api/DragDotNet.Api.csproj" afterPath="$PROJECT_DIR$/DragDotNet.Api/DragDotNet.Api.csproj" />
-      <change beforePath="$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs" afterPath="$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs" />
-      <change beforePath="$PROJECT_DIR$/DragDotNet.Api/Startup.cs" afterPath="$PROJECT_DIR$/DragDotNet.Api/Startup.cs" />
+      <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/app-routing.module.ts" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/app-routing.module.ts" />
+      <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/app.module.ts" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/app.module.ts" />
+      <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/pages/criminal-view/criminal-view.component.ts" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/pages/criminal-view/criminal-view.component.ts" />
+      <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/pages/search/image/image.component.ts" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/pages/search/image/image.component.ts" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,30 +15,33 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="FindScoundrelModel.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/FindScoundrelModel.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <folding>
+                <marker date="1525352099358" expanded="true" signature="36:315" ph="{...}" />
+                <marker date="1525352099358" expanded="true" signature="74:313" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ScoundrelsController.cs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ScoundrelsController.cs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="36" column="102" lean-forward="false" selection-start-line="36" selection-start-column="102" selection-end-line="36" selection-end-column="102" />
+            <state relative-caret-position="525">
+              <caret line="37" column="12" lean-forward="false" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
               <folding>
-                <marker date="1525354640686" expanded="true" signature="36:1320" ph="{...}" />
-                <marker date="1525354640686" expanded="true" signature="49:145" ph="..." />
-                <marker date="1525354640686" expanded="true" signature="230:1318" ph="{...}" />
-                <marker date="1525354640686" expanded="true" signature="563:863" ph="{...}" />
-                <marker date="1525354640686" expanded="true" signature="619:686" ph="{...}" />
-                <marker date="1525354640686" expanded="true" signature="1038:1312" ph="{...}" />
-                <marker date="1525354640686" expanded="true" signature="1094:1161" ph="{...}" />
+                <marker date="1525356588273" expanded="true" signature="36:1320" ph="{...}" />
+                <marker date="1525356588273" expanded="false" signature="49:145" ph="..." />
+                <marker date="1525356588273" expanded="true" signature="230:1318" ph="{...}" />
+                <marker date="1525356588273" expanded="true" signature="563:863" ph="{...}" />
+                <marker date="1525356588273" expanded="true" signature="619:686" ph="{...}" />
+                <marker date="1525356588273" expanded="true" signature="1038:1312" ph="{...}" />
+                <marker date="1525356588273" expanded="true" signature="1094:1161" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -53,8 +53,8 @@
             <state relative-caret-position="60">
               <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
               <folding>
-                <marker date="1525354625115" expanded="true" signature="36:133" ph="{...}" />
-                <marker date="1525354625115" expanded="true" signature="70:131" ph="{...}" />
+                <marker date="1525356588272" expanded="true" signature="36:133" ph="{...}" />
+                <marker date="1525356588272" expanded="true" signature="70:131" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -63,21 +63,21 @@
       <file leaf-file-name="AuthenticationController.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+            <state relative-caret-position="135">
+              <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
               <folding>
-                <marker date="1525354253340" expanded="true" signature="36:430" ph="{...}" />
-                <marker date="1525354253340" expanded="true" signature="199:428" ph="{...}" />
-                <marker date="1525354253340" expanded="true" signature="298:422" ph="{...}" />
+                <marker date="1525357747121" expanded="true" signature="36:429" ph="{...}" />
+                <marker date="1525357747121" expanded="true" signature="199:427" ph="{...}" />
+                <marker date="1525357747121" expanded="true" signature="297:421" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TaskAwaiter.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TaskAwaiter.cs" pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/899ABC88-C3F1-4C7D-B7BA-444AD3BDFC76/fc/212eb0ee/TaskAwaiter.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
+            <state relative-caret-position="0">
               <caret line="57" column="6" lean-forward="false" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
               <folding />
             </state>
@@ -87,19 +87,19 @@
       <file leaf-file-name="Startup.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Startup.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+            <state relative-caret-position="765">
+              <caret line="56" column="47" lean-forward="false" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
               <folding>
-                <marker date="1525354087587" expanded="true" signature="63:1876" ph="{...}" />
-                <marker date="1525354087587" expanded="false" signature="76:335" ph="..." />
-                <marker date="1525354087587" expanded="true" signature="361:1874" ph="{...}" />
-                <marker date="1525354087587" expanded="true" signature="420:483" ph="{...}" />
-                <marker date="1525354087587" expanded="true" signature="706:910" ph="{...}" />
-                <marker date="1525354087587" expanded="true" signature="787:898" ph="{...}" />
-                <marker date="1525354087587" expanded="true" signature="1098:1868" ph="{...}" />
-                <marker date="1525354087587" expanded="true" signature="1145:1222" ph="{...}" />
-                <marker date="1525354087587" expanded="true" signature="1258:1456" ph="{...}" />
-                <marker date="1525354087587" expanded="true" signature="1650:1800" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="63:1935" ph="{...}" />
+                <marker date="1525356816671" expanded="false" signature="76:335" ph="..." />
+                <marker date="1525356816671" expanded="true" signature="361:1933" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="420:483" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="706:910" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="787:898" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="1098:1927" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="1145:1222" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="1258:1456" ph="{...}" />
+                <marker date="1525356816671" expanded="true" signature="1650:1800" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -111,7 +111,6 @@
             <state relative-caret-position="150">
               <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
               <folding>
-                <marker date="1525352099360" expanded="true" signature="24:1854" ph="{...}" />
                 <marker date="1525352099360" expanded="false" signature="37:171" ph="..." />
                 <marker date="1525352099360" expanded="true" signature="205:1852" ph="{...}" />
                 <marker date="1525352099360" expanded="true" signature="562:1846" ph="{...}" />
@@ -126,19 +125,19 @@
       <file leaf-file-name="ImageIdentifyApi.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
+            <state relative-caret-position="233">
+              <caret line="45" column="20" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="20" />
               <folding>
-                <marker date="1525353818651" expanded="false" signature="6:54" ph="..." />
-                <marker date="1525353818651" expanded="true" signature="80:2143" ph="{...}" />
-                <marker date="1525353818651" expanded="false" signature="93:227" ph="..." />
-                <marker date="1525353818651" expanded="true" signature="262:2141" ph="{...}" />
-                <marker date="1525353818651" expanded="true" signature="577:2135" ph="{...}" />
-                <marker date="1525353818651" expanded="true" signature="1108:2098" ph="{...}" />
-                <marker date="1525353818651" expanded="true" signature="1262:1391" ph="{...}" />
-                <marker date="1525353818651" expanded="true" signature="1412:2084" ph="{...}" />
-                <marker date="1525353818651" expanded="true" signature="1812:2065" ph="{...}" />
-                <marker date="1525353818651" expanded="true" signature="1882:2043" ph="{...}" />
+                <marker date="1525356588283" expanded="false" signature="6:54" ph="..." />
+                <marker date="1525356588283" expanded="true" signature="80:2143" ph="{...}" />
+                <marker date="1525356588283" expanded="false" signature="93:227" ph="..." />
+                <marker date="1525356588283" expanded="true" signature="262:2141" ph="{...}" />
+                <marker date="1525356588283" expanded="true" signature="577:2135" ph="{...}" />
+                <marker date="1525356588283" expanded="true" signature="1108:2098" ph="{...}" />
+                <marker date="1525356588283" expanded="true" signature="1262:1391" ph="{...}" />
+                <marker date="1525356588283" expanded="true" signature="1412:2084" ph="{...}" />
+                <marker date="1525356588283" expanded="true" signature="1812:2065" ph="{...}" />
+                <marker date="1525356588283" expanded="true" signature="1882:2043" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -147,11 +146,11 @@
       <file leaf-file-name="ScoundrelInfo.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="23" lean-forward="false" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+            <state relative-caret-position="135">
+              <caret line="9" column="22" lean-forward="false" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="39" />
               <folding>
-                <marker date="1525353603573" expanded="true" signature="24:347" ph="{...}" />
-                <marker date="1525353603573" expanded="true" signature="57:345" ph="{...}" />
+                <marker date="1525356588287" expanded="true" signature="24:347" ph="{...}" />
+                <marker date="1525356588287" expanded="true" signature="57:345" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -167,8 +166,8 @@
     <setting file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ImagePostModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/FindScoundrelModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/FindScoundrelModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/899ABC88-C3F1-4C7D-B7BA-444AD3BDFC76/fc/212eb0ee/TaskAwaiter.cs" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/DragDotNet.Api/Startup.cs" root0="FORCE_HIGHLIGHTING" />
@@ -179,10 +178,10 @@
         <option value="$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs" />
         <option value="$PROJECT_DIR$/DragDotNet.Api/ImageIndentificationClient.cs" />
         <option value="$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" />
-        <option value="$PROJECT_DIR$/DragDotNet.Api/Startup.cs" />
-        <option value="$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs" />
         <option value="$PROJECT_DIR$/DragDotNet.Api/Controllers/ImagePostModel.cs" />
         <option value="$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" />
+        <option value="$PROJECT_DIR$/DragDotNet.Api/Startup.cs" />
+        <option value="$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs" />
       </list>
     </option>
   </component>
@@ -212,6 +211,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="SolutionExplorer">
         <subPane>
           <expand>
@@ -236,7 +236,6 @@
         <option name="show-file-system" value="false" />
         <option name="show-all-items" value="false" />
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -289,11 +288,12 @@
       <option name="presentableId" value="Default" />
       <updated>1525352256718</updated>
       <workItem from="1525352258976" duration="2561000" />
+      <workItem from="1525356765734" duration="1145000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2561000" />
+    <option name="totallyTimeSpent" value="4773000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -309,26 +309,26 @@
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -354,17 +354,113 @@
           </properties>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs</url>
+          <line>43</line>
+          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" initialLine="43">
+            <startOffsets>
+              <startOffset value="1591" />
+            </startOffsets>
+            <endOffsets>
+              <endOffset value="1671" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs</url>
+          <line>45</line>
+          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" initialLine="45">
+            <startOffsets>
+              <startOffset value="1765" />
+            </startOffsets>
+            <endOffsets>
+              <endOffset value="2066" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs</url>
+          <line>37</line>
+          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" initialLine="37">
+            <startOffsets>
+              <startOffset value="1280" />
+            </startOffsets>
+            <endOffsets>
+              <endOffset value="1302" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="2" />
+      <option name="time" value="5" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" column="102" lean-forward="false" selection-start-line="36" selection-start-column="102" selection-end-line="36" selection-end-column="102" />
+          <folding>
+            <marker date="1525356588273" expanded="true" signature="36:1320" ph="{...}" />
+            <marker date="1525356588273" expanded="false" signature="49:145" ph="..." />
+            <marker date="1525356588273" expanded="true" signature="230:1318" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="563:863" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="619:686" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="1038:1312" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="1094:1161" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/FindScoundrelModel.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1525352099358" expanded="true" signature="36:315" ph="{...}" />
+            <marker date="1525352099358" expanded="true" signature="74:313" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ImagePostModel.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+          <folding>
+            <marker date="1525356588272" expanded="true" signature="36:133" ph="{...}" />
+            <marker date="1525356588272" expanded="true" signature="70:131" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/899ABC88-C3F1-4C7D-B7BA-444AD3BDFC76/fc/212eb0ee/TaskAwaiter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="57" column="6" lean-forward="false" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Startup.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <marker date="1525356816671" expanded="true" signature="63:1935" ph="{...}" />
+            <marker date="1525356816671" expanded="false" signature="76:335" ph="..." />
+            <marker date="1525356816671" expanded="true" signature="361:1933" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="420:483" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="706:910" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="787:898" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1098:1927" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1145:1222" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1258:1456" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1650:1800" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -373,7 +469,6 @@
         <state relative-caret-position="150">
           <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
           <folding>
-            <marker date="1525352099360" expanded="true" signature="24:1854" ph="{...}" />
             <marker date="1525352099360" expanded="false" signature="37:171" ph="..." />
             <marker date="1525352099360" expanded="true" signature="205:1852" ph="{...}" />
             <marker date="1525352099360" expanded="true" signature="562:1846" ph="{...}" />
@@ -384,13 +479,59 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="47" column="35" lean-forward="false" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
+          <folding>
+            <marker date="1525356588283" expanded="false" signature="6:54" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="80:2143" ph="{...}" />
+            <marker date="1525356588283" expanded="false" signature="93:227" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="262:2141" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="577:2135" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1108:2098" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1262:1391" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1412:2084" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1812:2065" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1882:2043" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="23" lean-forward="false" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        <state relative-caret-position="105">
+          <caret line="7" column="39" lean-forward="true" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
           <folding>
-            <marker date="1525353603573" expanded="true" signature="24:347" ph="{...}" />
-            <marker date="1525353603573" expanded="true" signature="57:345" ph="{...}" />
+            <marker date="1525356588287" expanded="true" signature="24:347" ph="{...}" />
+            <marker date="1525356588287" expanded="true" signature="57:345" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="54" lean-forward="true" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
+          <folding>
+            <marker date="1525357747121" expanded="true" signature="36:429" ph="{...}" />
+            <marker date="1525357747121" expanded="true" signature="199:427" ph="{...}" />
+            <marker date="1525357747121" expanded="true" signature="297:421" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/PoliceApiClient.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+          <folding>
+            <marker date="1525352099360" expanded="false" signature="37:171" ph="..." />
+            <marker date="1525352099360" expanded="true" signature="205:1852" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="562:1846" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="1220:1836" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="1308:1822" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="1536:1804" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -400,16 +541,16 @@
         <state relative-caret-position="180">
           <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
-            <marker date="1525354087587" expanded="true" signature="63:1876" ph="{...}" />
-            <marker date="1525354087587" expanded="false" signature="76:335" ph="..." />
-            <marker date="1525354087587" expanded="true" signature="361:1874" ph="{...}" />
-            <marker date="1525354087587" expanded="true" signature="420:483" ph="{...}" />
-            <marker date="1525354087587" expanded="true" signature="706:910" ph="{...}" />
-            <marker date="1525354087587" expanded="true" signature="787:898" ph="{...}" />
-            <marker date="1525354087587" expanded="true" signature="1098:1868" ph="{...}" />
-            <marker date="1525354087587" expanded="true" signature="1145:1222" ph="{...}" />
-            <marker date="1525354087587" expanded="true" signature="1258:1456" ph="{...}" />
-            <marker date="1525354087587" expanded="true" signature="1650:1800" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="63:1935" ph="{...}" />
+            <marker date="1525356816671" expanded="false" signature="76:335" ph="..." />
+            <marker date="1525356816671" expanded="true" signature="361:1933" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="420:483" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="706:910" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="787:898" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1098:1927" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1145:1222" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1258:1456" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1650:1800" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -419,9 +560,9 @@
         <state relative-caret-position="120">
           <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
           <folding>
-            <marker date="1525354253340" expanded="true" signature="36:430" ph="{...}" />
-            <marker date="1525354253340" expanded="true" signature="199:428" ph="{...}" />
-            <marker date="1525354253340" expanded="true" signature="298:422" ph="{...}" />
+            <marker date="1525357747121" expanded="true" signature="36:429" ph="{...}" />
+            <marker date="1525357747121" expanded="true" signature="199:427" ph="{...}" />
+            <marker date="1525357747121" expanded="true" signature="297:421" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -431,8 +572,8 @@
         <state relative-caret-position="60">
           <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
           <folding>
-            <marker date="1525354625115" expanded="true" signature="36:133" ph="{...}" />
-            <marker date="1525354625115" expanded="true" signature="70:131" ph="{...}" />
+            <marker date="1525356588272" expanded="true" signature="36:133" ph="{...}" />
+            <marker date="1525356588272" expanded="true" signature="70:131" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -442,32 +583,13 @@
         <state relative-caret-position="400">
           <caret line="36" column="102" lean-forward="false" selection-start-line="36" selection-start-column="102" selection-end-line="36" selection-end-column="102" />
           <folding>
-            <marker date="1525354640686" expanded="true" signature="36:1320" ph="{...}" />
-            <marker date="1525354640686" expanded="true" signature="49:145" ph="..." />
-            <marker date="1525354640686" expanded="true" signature="230:1318" ph="{...}" />
-            <marker date="1525354640686" expanded="true" signature="563:863" ph="{...}" />
-            <marker date="1525354640686" expanded="true" signature="619:686" ph="{...}" />
-            <marker date="1525354640686" expanded="true" signature="1038:1312" ph="{...}" />
-            <marker date="1525354640686" expanded="true" signature="1094:1161" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
-          <folding>
-            <marker date="1525353818651" expanded="false" signature="6:54" ph="..." />
-            <marker date="1525353818651" expanded="true" signature="80:2143" ph="{...}" />
-            <marker date="1525353818651" expanded="false" signature="93:227" ph="..." />
-            <marker date="1525353818651" expanded="true" signature="262:2141" ph="{...}" />
-            <marker date="1525353818651" expanded="true" signature="577:2135" ph="{...}" />
-            <marker date="1525353818651" expanded="true" signature="1108:2098" ph="{...}" />
-            <marker date="1525353818651" expanded="true" signature="1262:1391" ph="{...}" />
-            <marker date="1525353818651" expanded="true" signature="1412:2084" ph="{...}" />
-            <marker date="1525353818651" expanded="true" signature="1812:2065" ph="{...}" />
-            <marker date="1525353818651" expanded="true" signature="1882:2043" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="36:1320" ph="{...}" />
+            <marker date="1525356588273" expanded="false" signature="49:145" ph="..." />
+            <marker date="1525356588273" expanded="true" signature="230:1318" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="563:863" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="619:686" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="1038:1312" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="1094:1161" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -477,6 +599,169 @@
         <state relative-caret-position="96">
           <caret line="57" column="6" lean-forward="false" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/FindScoundrelModel.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1525352099358" expanded="true" signature="36:315" ph="{...}" />
+            <marker date="1525352099358" expanded="true" signature="74:313" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="47" column="35" lean-forward="false" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
+          <folding>
+            <marker date="1525356588283" expanded="false" signature="6:54" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="80:2143" ph="{...}" />
+            <marker date="1525356588283" expanded="false" signature="93:227" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="262:2141" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="577:2135" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1108:2098" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1262:1391" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1412:2084" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1812:2065" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1882:2043" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="23" lean-forward="false" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+          <folding>
+            <marker date="1525356588287" expanded="true" signature="24:347" ph="{...}" />
+            <marker date="1525356588287" expanded="true" signature="57:345" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/PoliceApiClient.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+          <folding>
+            <marker date="1525352099360" expanded="false" signature="37:171" ph="..." />
+            <marker date="1525352099360" expanded="true" signature="205:1852" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="562:1846" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="1220:1836" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="1308:1822" ph="{...}" />
+            <marker date="1525352099360" expanded="true" signature="1536:1804" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/899ABC88-C3F1-4C7D-B7BA-444AD3BDFC76/fc/212eb0ee/TaskAwaiter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="57" column="6" lean-forward="false" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Startup.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="56" column="47" lean-forward="false" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
+          <folding>
+            <marker date="1525356816671" expanded="true" signature="63:1935" ph="{...}" />
+            <marker date="1525356816671" expanded="false" signature="76:335" ph="..." />
+            <marker date="1525356816671" expanded="true" signature="361:1933" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="420:483" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="706:910" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="787:898" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1098:1927" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1145:1222" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1258:1456" ph="{...}" />
+            <marker date="1525356816671" expanded="true" signature="1650:1800" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/AuthenticationController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding>
+            <marker date="1525357747121" expanded="true" signature="36:429" ph="{...}" />
+            <marker date="1525357747121" expanded="true" signature="199:427" ph="{...}" />
+            <marker date="1525357747121" expanded="true" signature="297:421" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ScoundrelInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="22" lean-forward="false" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="39" />
+          <folding>
+            <marker date="1525356588287" expanded="true" signature="24:347" ph="{...}" />
+            <marker date="1525356588287" expanded="true" signature="57:345" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ImagePostModel.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+          <folding>
+            <marker date="1525356588272" expanded="true" signature="36:133" ph="{...}" />
+            <marker date="1525356588272" expanded="true" signature="70:131" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/FindScoundrelModel.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1525352099358" expanded="true" signature="36:315" ph="{...}" />
+            <marker date="1525352099358" expanded="true" signature="74:313" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="45" column="20" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="20" />
+          <folding>
+            <marker date="1525356588283" expanded="false" signature="6:54" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="80:2143" ph="{...}" />
+            <marker date="1525356588283" expanded="false" signature="93:227" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="262:2141" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="577:2135" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1108:2098" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1262:1391" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1412:2084" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1812:2065" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1882:2043" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="37" column="12" lean-forward="false" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
+          <folding>
+            <marker date="1525356588273" expanded="true" signature="36:1320" ph="{...}" />
+            <marker date="1525356588273" expanded="false" signature="49:145" ph="..." />
+            <marker date="1525356588273" expanded="true" signature="230:1318" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="563:863" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="619:686" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="1038:1312" ph="{...}" />
+            <marker date="1525356588273" expanded="true" signature="1094:1161" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
