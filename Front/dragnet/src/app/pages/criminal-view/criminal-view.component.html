@@ -1,3 +1,132 @@
-<p>
-  criminal-view works!
-</p>
+<div class="row">
+  <div class="col-md">
+    <img src="data:{{scoundrel.photo.mimetype}};base64,{{scoundrel.photo.content}}" class="img-fluid" alt="Responsive image">
+  </div>
+  <div class="col-md">
+    <div class="row">
+      <div class="col-md">
+        <div class="card">
+          <div class="card-header">
+            <h5>
+              Details
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm">
+                Name:
+              </div>
+              <div class="col-sm">
+                {{scoundrel.firstname}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                DoB:
+              </div>
+              <div class="col-sm">
+                {{scoundrel.dateofbirth}}
+              </div>
+              <div class="col-sm">
+                Gender:
+              </div>
+              <div class="col-sm">
+                {{scoundrel.gender}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                Address:
+              </div>
+              <div class="col-sm">
+                <address>
+                  {{scoundrel.address.line1}} {{scoundrel.address.line2}} {{scoundrel.address.city}} {{scoundrel.address.county}} {{scoundrel.address.postcode}}
+                </address>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row top-buffer">
+  <div class="col-md">
+    <div class="row">
+      <div class="col-md">
+        <h5>Arrest warrants</h5>
+      </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let conviction of scoundrel.arrestwarrants">
+        <tr>
+          <th scope="row">1</th>
+          <td>{{conviction.offence}}</td>
+          <td>{{conviction.status}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-md">
+        <h5>Curfes</h5>
+      </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Status</th>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let curfe of scoundrel.curfeworders">
+        <tr>
+          <th scope="row">1</th>
+          <td>{{curfe.starttime}}</td>
+          <td>{{curfe.endtime}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-md">
+        <h5>Firearms</h5>
+      </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Type</th>
+          <th scope="col">Status</th>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let firearm of scoundrel.firearms">
+        <tr>
+          <th scope="row">1</th>
+          <td>{{firearm.firearmtype}}</td>
+          <td>{{firearm.status}}</td>
+          <td>{{firearm.starttime}}</td>
+          <td>{{firearm.endtime}}</td>
+          <td>{{firearm.firearmdescription}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

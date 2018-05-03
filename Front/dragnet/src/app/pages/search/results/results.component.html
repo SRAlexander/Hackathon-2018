@@ -1,3 +1,22 @@
-<p>
-  results works!
-</p>
+<div class="card" *ngFor="let result of results">
+  <h5 class="card-header">{{result.name}}</h5>
+  <div class="row no-gutters">
+    <div class="col-auto">
+      <img src="//placehold.it/200" class="img-fluid" alt="">
+    </div>
+    <div class="col">
+      <div class="card-block px-2">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{result.dob}}</li>
+          <li class="list-group-item">{{result.gender}}</li>
+          <li class="list-group-item">
+            <address>{{result.address}}</address>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer w-100 text-muted">
+    <small class="text-muted">80% Match</small>
+  </div>
+</div>
