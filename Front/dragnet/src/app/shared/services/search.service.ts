@@ -26,7 +26,7 @@ export class SearchService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers, search : body };
 
-    return this._http.get<any>(this._apiLocation + "detailResults", options)
+    return this._http.get<any>(this._apiLocation + "Scoundrels/Find-Scoundrels", options)
       .do(data => {
         //TODO What?
       })

@@ -1,7 +1,9 @@
 ﻿namespace DragDotNet.Api.Controllers
 {
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Mvc;
+
 
     [Route("api/[controller]")]
     public class ScoundrelsController : Controller
