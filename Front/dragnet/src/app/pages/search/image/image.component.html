@@ -33,16 +33,11 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="showWebcam">
+  <div class="row top-buffer" *ngIf="showWebcam">
     <div class="col-8 mx-auto">
       <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal" (click)="triggerSnapshot()">
         Take A Snapshot
       </button>
     </div>
   </div>
-  <!-- <div class="row" *ngIf="!showWebcam">
-    <div class="col-8 mx-auto">
-      <img class="img-fluid" [src]="webcamImage.imageAsDataUrl" />
-    </div>
-  </div> -->
 </div>
