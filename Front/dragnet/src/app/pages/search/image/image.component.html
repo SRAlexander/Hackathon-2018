@@ -1,1 +1,17 @@
-<webcam></webcam>
+<div class="row" *ngIf="showWebcam">
+  <div class="col-12">
+    <div class="embed-responsive embed-responsive-16by9">
+      <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="showWebcam">
+  <div class="col-12">
+    <button class="btn btn-primary btn-block" (click)="triggerSnapshot()">Take A Snapshot</button>
+  </div>
+</div>
+<div class="row" *ngIf="!showWebcam">
+  <div class="col-12">
+      <img class="img-fluid" [src]="webcamImage.imageAsDataUrl" />
+  </div>
+</div>
