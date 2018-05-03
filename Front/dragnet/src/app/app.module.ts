@@ -10,6 +10,7 @@ import { ResultsComponent } from './pages/search/results/results.component';
 import { CriminalViewComponent } from './pages/criminal-view/criminal-view.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './pages/home/home.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { APP_INITIALIZER } from '@angular/core';
@@ -33,6 +34,7 @@ function initConfig(config: AppConfig){
   imports: [
     SharedModule,
     AppRoutingModule,
+    AngularFontAwesomeModule
     NgxSpinnerModule
   ],
   providers: [
