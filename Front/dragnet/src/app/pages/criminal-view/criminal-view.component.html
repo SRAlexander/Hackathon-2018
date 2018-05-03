@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-md">
-    <img src="data:{{scoundrel.photo.mimetype}};base64,{{scoundrel.photo.content}}" class="img-fluid" alt="Responsive image">
+    <img *ngIf="scoundrel != null && scoundrel.photo != null" src="data:{{scoundrel.photo.mimetype}};base64,{{scoundrel.photo.content}}" class="img-fluid" alt="Responsive image">
   </div>
   <div class="col-md">
     <div class="row">
       <div class="col-md">
-        <div class="card">
+        <div class="card" *ngIf="scoundrel != null">
           <div class="card-header">
             <h5>
               Details
@@ -66,8 +66,8 @@
           <th scope="col">Status</th>
         </tr>
       </thead>
-      <tbody *ngFor="let conviction of scoundrel.arrestwarrants">
-        <tr>
+      <tbody *ngIf="scoundrel != null && scoundrel.arrestwarrants != null">
+        <tr *ngFor="let conviction of scoundrel.arrestwarrants">
           <th scope="row">1</th>
           <td>{{conviction.offence}}</td>
           <td>{{conviction.status}}</td>
@@ -90,8 +90,8 @@
           <th scope="col">End Time</th>
         </tr>
       </thead>
-      <tbody *ngFor="let curfe of scoundrel.curfeworders">
-        <tr>
+      <tbody *ngIf="scoundrel != null && scoundrel.curfeworders != null" >
+        <tr *ngFor="let curfe of scoundrel.curfeworders">
           <th scope="row">1</th>
           <td>{{curfe.starttime}}</td>
           <td>{{curfe.endtime}}</td>
@@ -116,8 +116,8 @@
           <th scope="col">Description</th>
         </tr>
       </thead>
-      <tbody *ngFor="let firearm of scoundrel.firearms">
-        <tr>
+      <tbody *ngIf="scoundrel != null && scoundrel.firearms != null">
+        <tr *ngFor="let firearm of scoundrel.firearms">
           <th scope="row">1</th>
           <td>{{firearm.firearmtype}}</td>
           <td>{{firearm.status}}</td>
