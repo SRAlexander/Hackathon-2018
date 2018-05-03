@@ -4349,6 +4349,10 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
+ngx-spinner@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-spinner/-/ngx-spinner-2.0.1.tgz#a37e5c1155aca8c436a03da55cb94c626b33bf7f"
+
 ngx-webcam@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/ngx-webcam/-/ngx-webcam-0.1.4.tgz#e5bbea7fd352c478b7aa27f6f0c09a2b9134f44e"

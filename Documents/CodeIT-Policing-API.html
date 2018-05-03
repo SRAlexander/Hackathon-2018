@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CodeIT Policing API Demonstrator </title>
+    <link rel="stylesheet" href="http://cdostorage.blob.core.windows.net/librarian/0.0.1/librarian.min.css" />
+</head>
+<body>
+    <script data-tag="main" type="text/markdown">
+# CodeIT Policing API Demonstrator
+
+- Topics
+    - [Introduction](#introduction)
+    - [Authentication](#authentication)
+    - [Status codes](#statuscodes)
+    - [Pagination](#pagination)
+- Resources
+    - [Addresses](#addresses)
+    - [Incidents](#incidents)
+    - [Incident Information](#incidentinformation)
+    - [Locations](#locations)
+    - [Officers](#officers)
+    - [Incident Officers](#incidentofficers)
+    - [People](#people)
+    - [Incident People](#incidentperson)
+    - [Vehicles](#vehicles)
+    - [Incident Vehicles](#incidentvehicle)
+
+# Introduction
+
+The CodeIT Policing API Demonstrator is organised around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer).
+Each resource is accessed using a unique URL and we use built-in HTTP features
+like authentication headers, HTTP verbs and error codes, which are understood by
+off-the-shelf HTTP clients.
+
+All data is sent and received in [JSON](http://www.json.org/) format.  When you
+make a request that returns a list of resources, then the response includes a
+"summary" representation of each resource (i.e. a subset of the attributes for
+that resource).  The summary will contain a link to the "detailed"
+representation which typically includes all of the attributes.  Blank fields are
+included as `null` rather than being omitted, and all timestamps are returned in
+ISO 8601 format `YYYY-MM-DDTHH:MM:SSZ`.
+
+All of the examples in this guide use the endpoint of the demo environment:
+<http://codeitpolicingapi.cloudapp.net/api>.  You are free to try any of the sample requests on
+the demo environment, just contact a member of the development team who will
+provide you with an account.
+
+# Authentication
+
+<div markdown="1">
+[HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication)
+is provided for the demo and test environments hosted on Azure.
+
+Sample credentials for basic authentication are included in all of the examples
+in this guide.  To test requests using your account, replace the sample
+credentials with your actual username and password.
+</div>
+
+<aside markdown="1">
+Request with basic authentication:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incidents" \
+   -u admin@civica.local:password123
+```
+</aside>
+
+# Status Codes
+
+CodeIT Policing API uses conventional HTTP response codes to indicate the success or
+failure of an API request.  In general, codes in the `2xx` range indicate
+success, codes in the `4xx` range indicate a validation error with data that has
+been submitted, and codes in the `5xx` range indicate an error with the server
+(these are rare).
+
+Codes in the `3xx` range redirect to a different URL, they will be accompanied
+with a `Location` header which contains the target URL.  Clients should assume
+that any request may result in a redirection.
+
+Codes              | &nbsp;
+-------------------|------------
+200 - OK           | Everything worked as expected.
+201 - Created      | A new resource was created, its URL provided in the `Location` header.
+204 - No Content   | The request was successful, but no content has been returned.
+302 - Found        | The request has been temporarily redirected to the URL in the `Location` header.
+400 - Bad Request  | The request was unacceptable, often due to missing parameters or validation errors.
+401 - Unauthorized | Authentication credentials are invalid or have not been provided.
+403 - Forbidden    | The current account doesn't have access to the requested resource.
+404 - Not Found    | The requested resource doesn't exist.
+500 - Server Error | Something unexpected went wrong on our end.
+
+# Pagination
+
+<div markdown="1">
+Requests that return multiple items will be paginated to 10 items by default.
+You can retrieve further pages with the `?Page` parameter in the query string.
+Note: the page number is 1-based, and if you omit the page parameter the request
+will return the first page.  The number of items per page can be increased by
+specifying a `?PageSize` parameter, the maximum number of items is 100.
+
+When items are paginated, the `Link` header will include hyperlinks to the
+available pages.  The link's `rel` value can be one of the following:
+
+Links    | &nbsp;
+---------|------------
+First    | The link to the first page of results.
+Previous | The link to the previous page of results.
+Next     | The link to the next page of results.
+Last     | The link to the last page of results.
+</div>
+
+<aside markdown="1">
+Request with paging parameters:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incidents?Page=5&PageSize=10" \
+   -u admin@civica.local:password123 \
+   -sD -
+```
+
+Response with link headers:
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Link: <http://codeitpolicingapi.cloudapp.net/api/incidents?Page=1&PageSize=10>; rel="First"
+Link: <http://codeitpolicingapi.cloudapp.net/api/incidents?Page=4&PageSize=10>; rel="Previous"
+Link: <http://codeitpolicingapi.cloudapp.net/api/incidents?Page=6&PageSize=10>; rel="Next"
+Link: <http://codeitpolicingapi.cloudapp.net/api/incidents?Page=11&PageSize=10>; rel="Last"
+```
+</aside>
+
+
+# Addresses
+
+An address which may be associated with a person in the system. The API allows 
+you to create, retrieve, update, and delete addresses. You can retrieve individual 
+addresses via their unique ID, or list all addresses recorded in the system.
+
+## List all addresses
+
+<div markdown="1">
+Returns a list of the addresses.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/addresses
+```
+
+The list can be filtered using the following parameters:
+
+Parameters  | &nbsp;
+----------- | ------
+Line1       | Filters the address' `Line1` field using * as a wildcard.
+PostCode    | Filters the address' `PostCode` field.
+City        | Filters the address' `City` field using * as a wildcard.
+Country     | Filters the address' `Country` field using * as a wildcard.
+AddressType | Filters the address' `AddressType` field.
+Coordinate  | Filters the address' `Latitude` and `Longitude` fields by proximity to the specified coordinate.
+PersonID    | Filters the `People` field.
+Page        | The page of results to be returned.
+PageSize    | The number of results to return per page (defaults to 10).
+Sort        | The field used to sort the results.
+Direction   | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes  | &nbsp;
+----------- | ------
+ID          | A value that uniquely identifies the entity.
+Line1       | The first line of the address.
+Line2       | The second line of the address.
+City        | The city.
+PostCode    | The postcode.
+County      | The county.
+Country     | The country.
+AddressType | The address type.
+Latitude    | The latitude.
+Longitude   | The longitude.
+</div>
+
+<aside markdown="1">
+Filter addresses by Coordinate:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/addresses?Coordinate=54.595624726,-5.93534041999993&PageSize=2" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling)\r\n   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)\r\n   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Arrest Warrants
+
+An arrest warrant associated with a person in the system. The API allows 
+you to create, retrieve, update, and delete arrest warrants. You can retrieve individual 
+arrest warrants via their unique ID, or list all arrest warrants recorded in the system.
+
+## List all arrest warrants
+
+<div markdown="1">
+Returns a list of the arrest warrants.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/arrest_warrants
+```
+
+The list can be filtered using the following parameters:
+
+Parameters | &nbsp;
+---------- | ------
+PersonID   | Filters the `PersonID` field.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes | &nbsp;
+---------- | ------
+ID         | A value that uniquely identifies the entity.
+PersonID   | The related person ID.
+Offence    | The offence.
+Status     | The status.
+
+</div>
+
+<aside markdown="1">
+Filter arrest warrants by PersonID:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/arrest_warrants?PersonID=8" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Curfew Orders
+
+A curfew order associated with a person in the system. The API allows 
+you to create, retrieve, update, and delete curfew orders. You can retrieve individual 
+curfew orders via their unique ID, or list all curfew orders recorded in the system.
+
+## List all curfew orders
+
+<div markdown="1">
+Returns a list of the curfew orders.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/curfew_orders
+```
+
+The list can be filtered using the following parameters:
+
+Parameters | &nbsp;
+---------- | ------
+PersonID   | Filters the `PersonID` field.
+AddressID  | Filters the `Person`'s `AddressID` field.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes | &nbsp;
+---------- | ------
+ID         | A value that uniquely identifies the entity.
+PersonID   | The related person ID.
+Status     | The status.
+StartTime  | The start time.
+EndTime    | The end time.
+
+</div>
+
+<aside markdown="1">
+Filter curfew orders by PersonID:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/curfew_orders?PersonID=8" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Firearms
+
+A firearm associated with a person in the system. The API allows 
+you to create, retrieve, update, and delete firearms. You can retrieve individual 
+firearms via their unique ID, or list all firearms recorded in the system.
+
+## List all firearms
+
+<div markdown="1">
+Returns a list of the firearms.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/firearms
+```
+
+The list can be filtered using the following parameters:
+
+Parameters | &nbsp;
+---------- | ------
+PersonID   | Filters the `PersonID` field.
+AddressID  | Filters the `Person`'s `AddressID` field.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes         | &nbsp;
+------------------ | ------
+ID                 | A value that uniquely identifies the entity.
+PersonID           | The related person ID.
+FirearmType        | The type.
+Status             | The status.
+StartTime          | The start time.
+EndTime            | The end time.
+FirearmDescription | The description.
+
+</div>
+
+<aside markdown="1">
+Filter firearms by PersonID:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/firearms?PersonID=18" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Incidents
+
+An incident detailing an event with associated people, vehicles and/or officers. The API allows 
+you to create, retrieve, update, and delete incidents. You can retrieve individual 
+incidents via their unique ID, or list all incidents recorded in the system.
+
+## List all incidents
+
+<div markdown="1">
+Returns a list of the incidents.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/incidents
+```
+
+The list can be filtered using the following parameters:
+
+Parameters     | &nbsp;
+-------------- | ------
+ReportTitle    | Filters the incident's `ReportTitle` field using * as a wildcard.
+IncidentDate   | Filters the incident's `IncidentDate` field.
+IncidentStatus | Filters the incident's `IncidentStatus` field.
+IncidentType   | Filters the incident's `IncidentType` field.
+OfficerID      | Filters the incident by related officers in the `IncidentOfficers` field.
+PersonID       | Filters the incident by related people in the `IncidentPersons` field.
+VehicleID      | Filters the incident by related vehicles in the `IncidentVehicles` field.
+Coordinate     | Filters the incident's `Location`'s `Latitude` and `Longitude` fields by proximity to the specified coordinate.
+Page           | The page of results to be returned.
+PageSize       | The number of results to return per page (defaults to 10).
+Sort           | The field used to sort the results.
+Direction      | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+</div>
+
+<aside markdown="1">
+Filter incidents by IncidentType:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incidents?IncidentType=Traffic&PageSize=2" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+## Retrieve an incident
+
+<div markdown="1">
+Retrieves a detailed view of an individual incident. The URL for the 
+incident can be found in the `DetailsLink` attribute from the list above.
+
+The returned incident has the following link headers to retrieve related entities
+
+Links    | &nbsp;
+-------- | ------
+Officers | The [officers](#officers) related to this incident.
+People   | The [people](#people) related to this incident.
+Vehicles | The [vehicles](#vehicles) related to this incident.
+
+Attributes           | &nbsp;
+-------------------- | ------
+ID                   | A value that uniquely identifies the entity.
+ReportedBy           | The name of the person who reported the incident.
+ReportTitle          | The title of the incident.
+ReportDescription    | The description of the incident.
+IncidentDate         | The date of the incident.
+ReportDate           | The date the incident was reported.
+IncidentStatus       | The status of the incident.
+IncidentType         | The incident type.
+LocationID           | The incident location ID.
+Location             | The incident location.
+IncidentInformations | The related information.
+IncidentVehicles     | The related vehicles.
+IncidentPersons      | The related people.
+IncidentOfficers     | The related officers.
+</div>
+
+<aside markdown="1">
+Retrieve an individual incident:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incidents/1" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Incident Information
+
+Information associated with an incident in the system. The API allows 
+you to create, retrieve, update, and delete information. You can retrieve individual 
+information via its unique ID, or list all information recorded in the system.
+
+## List all information
+
+<div markdown="1">
+Returns a list of the information.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/incident_information
+```
+
+The list can be filtered using the following parameters:
+
+Parameters | &nbsp;
+---------- | ------
+IncidentID | Filters the information's `IncidentID` field.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes            | &nbsp;
+--------------------- | ------
+ID                    | A value that uniquely identifies the entity.
+IncidentID            | The related incident ID.
+InformationLocationID | The location ID.
+InformationType       | The type.
+InformationTitle      | The title.
+InformationDetails    | The details.
+InformationLocation   | The location.
+Data                  | The data.
+
+</div>
+
+<aside markdown="1">
+Filter information by IncidentID:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incident_information?IncidentID=1" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Locations
+
+A location which may be associated with an incident in the system. The API allows 
+you to create, retrieve, update, and delete locations. You can retrieve individual 
+locations via their unique ID, or list all locations recorded in the system.
+
+## List all locations
+
+<div markdown="1">
+Returns a list of the locations.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/locations
+```
+
+The list can be filtered using the following parameters:
+
+Parameters | &nbsp;
+---------- | ------
+Coordinate | Filters the location's `Latitude` and `Longitude` fields by proximity to the specified coordinate.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes          | &nbsp;
+------------------- | ------
+ID                  | A value that uniquely identifies the entity.
+LocationSummary     | The summary.
+LocationDescription | The description.
+LocationDetails     | The details.
+Latitude            | The latitude.
+Longitude           | The longitude.
+
+</div>
+
+<aside markdown="1">
+Filter locations by Coordinate:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/locations?Coordinate=54.595287828,-5.93402671599995&PageSize=2" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Officers
+
+An officer which may be associated with an incident in the system. The API allows 
+you to create, retrieve, update, and delete officers. You can retrieve individual 
+officers via their unique ID, or list all officers recorded in the system.
+
+## List all officers
+
+<div markdown="1">
+Returns a list of the officers.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/officers
+```
+
+The list can be filtered using the following parameters:
+
+Parameters  | &nbsp;
+----------- | ------
+BadgeNumber | Filters the officer's `BadgeNumber`.
+Department  | Filters the officer's `Department` field using * as a wildcard.
+Rank        | Filters the officer's `Rank` field.
+IncidentID  | Filters officers to those linked to the specified incident.
+Page        | The page of results to be returned.
+PageSize    | The number of results to return per page (defaults to 10).
+Sort        | The field used to sort the results.
+Direction   | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes  | &nbsp;
+----------- | ------
+ID          | A value that uniquely identifies the entity.
+BadgeNumber | The badge number.
+Rank        | The rank.
+Department  | The department.
+Photo       | The photo data.
+</div>
+
+<aside markdown="1">
+Filter officers by Department:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/officers?Department=Serious Crime&PageSize=2" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Incident Officers
+
+Officers associated with an incident in the system. The API allows 
+you to create, retrieve, update, and delete IncidentOfficer relationships. You can retrieve an individual 
+relationship via its unique ID, or list all relationships recorded in the system.
+
+## List all incident officers
+
+<div markdown="1">
+Returns a list of the incident officers.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/incident_officer
+```
+
+Parameters | &nbsp;
+---------- | ------
+IncidentID | Filters the relationship's `IncidentID` field.
+OfficerID  | Filters the relationship's `OfficerID` field.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes | &nbsp;
+---------- | ------
+ID         | A value that uniquely identifies the entity.
+IncidentID | The incident ID.
+OfficerID  | The officer id.
+Role       | Gets or set the role.
+Officer    | The officer details.
+
+</div>
+
+<aside markdown="1">
+Get an individual incident_officer relationship:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incident_officer/1" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# People
+
+A person who may be linked to incidents. The API allows 
+you to create, retrieve, update, and delete people. You can retrieve individual 
+people via their unique ID, or list all people recorded in the system.
+
+## List all people
+
+<div markdown="1">
+Returns a list of the people.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/people
+```
+
+The list can be filtered using the following parameters:
+
+Parameters  | &nbsp;
+----------- | ------
+FirstName   | Filters the person's `FirstName` field using * as a wildcard.
+LastName    | Filters the person's `LastName` field using * as a wildcard.
+DateOfBirth | Filters the person's `DateOfBirth` field.
+Gender      | Filters the person's `Gender` field.
+VehicleReg  | Filters the person's `RegisteredKeepers` field.
+AddressID   | Filters the person's `AddressID` field.
+IncidentID  | Filters people to those linked to the specified incident.
+Page        | The page of results to be returned.
+PageSize    | The number of results to return per page (defaults to 10).
+Sort        | The field used to sort the results.
+Direction   | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+</div>
+
+<aside markdown="1">
+Filter people by first name and last name:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/people?FirstName=Terrence&LastName=Powell" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+## Retrieve a person
+
+<div markdown="1">
+Retrieves a detailed view of an individual person. The URL for the 
+person can be found in the `DetailsLink` attribute from the list above.
+
+Attributes        | &nbsp;
+----------------- | ------
+ID                | A value that uniquely identifies the entity.
+FirstName         | The first name.
+MiddleName        | The middle name.
+LastName          | The last name.
+DateOfBirth       | The date of birth.
+DateDeceased      | The deceased date.
+Gender            | The gender.
+Photo             | The photo data.
+AddressID         | The address ID.
+Address           | The address.
+Firearms          | The registered firearms.
+RegisteredKeepers | The related registered keeper entries for this person.
+ArrestWarrants    | The related arrest warrants for this person.
+CurfewOrders      | The related curfew orders for this person.
+</div>
+
+<aside markdown="1">
+Retrieve an individual person:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/people/8" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Incident Person
+
+People associated with an incident in the system. The API allows 
+you to create, retrieve, update, and delete IncidentPerson relationships. You can retrieve an individual 
+relationship via its unique ID, or list all relationships recorded in the system.
+
+## List all incident people
+
+<div markdown="1">
+Returns a list of the incident people.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/incident_person
+```
+
+Parameters | &nbsp;
+---------- | ------
+IncidentID | Filters the relationship's `IncidentID` field.
+PersonID   | Filters the relationship's `PersonID` field.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes               | &nbsp;
+------------------------ | ------
+ID                       | A value that uniquely identifies the entity.
+IncidentID               | The incident ID.
+PersonID                 | The person ID.
+Role                     | The role.
+StatementTitle           | The statement title.
+StatementDetails         | The statement details.
+Signature                | The signature.
+SignatureLocationID      | The signature location ID.
+SignatureLocation        | The signature location.
+Fingerprint              | The fingerprint.
+FingerprintLocationID    | The fingerprint location ID.
+FingerprintLocation      | The fingerprint location.
+VoiceRecording           | The voice recording.
+VoiceRecordingLocationID | The voice recording location ID.
+VoiceRecordingLocation   | The voice recording location.
+Person                   | The person.
+
+</div>
+
+<aside markdown="1">
+Get an individual incident_person relationship:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incident_person/1" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Vehicles
+
+A vehicle which may be linked to incidents or registered keepers in the system. The API allows 
+you to create, retrieve, update, and delete vehicles. You can retrieve individual 
+vehicles via their unique ID, or list all vehicles recorded in the system.
+
+## List all vehicles
+
+<div markdown="1">
+Returns a list of the vehicles.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/vehicles
+```
+
+The list can be filtered using the following parameters:
+
+Parameters | &nbsp;
+---------- | ------
+VehicleReg | Filters the vehicle's `VehicleReg` field using * as a wildcard.
+Make       | Filters the vehicle's `Make` field using * as a wildcard.
+Model      | Filters the vehicle's `Model` field using * as a wildcard.
+VIN        | Filters the vehicle's `VIN` field using * as a wildcard.
+IncidentID | Filters vehicles to those linked to the specified incident.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+</div>
+
+<aside markdown="1">
+Filter vehicles by Make:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/vehicles?Make=Renault" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+## Retrieve a vehicle
+
+<div markdown="1">
+Retrieves a detailed view of an individual vehicle. The URL for the 
+vehicle can be found in the `DetailsLink` attribute from the list above.
+
+Attributes     | &nbsp;
+-------------- | ------
+ID             | A value that uniquely identifies the entity.
+VehicleReg     | The vehicle registration.
+Colour         | The colour.
+Make           | The make.
+Model          | The model.
+EngineCapacity | The engine capacity.
+VIN            | The VIN.
+</div>
+
+<aside markdown="1">
+Retrieve an individual vehicle:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/vehicles/1" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+# Incident Vehicle
+
+Vehicles associated with an incident in the system. The API allows 
+you to create, retrieve, update, and delete IncidentVehicle relationships. You can retrieve an individual 
+relationship via its unique ID, or list all relationships recorded in the system.
+
+## List all incident vehicles
+
+<div markdown="1">
+Returns a list of the incident vehicles.
+
+```
+http://codeitpolicingapi.cloudapp.net/api/incident_vehicle
+```
+
+Parameters | &nbsp;
+---------- | ------
+IncidentID | Filters the relationship's `IncidentID` field.
+VehicleID  | Filters the relationship's `VehicleID` field.
+Page       | The page of results to be returned.
+PageSize   | The number of results to return per page (defaults to 10).
+Sort       | The field used to sort the results.
+Direction  | The direction of the sort - `Ascending` or `Descending` (defaults to Ascending).
+
+Attributes | &nbsp;
+---------- | ------
+ID         | A value that uniquely identifies the entity.
+IncidentID | The incident ID.
+VehicleID  | The vehicle ID.
+Vehicle    | The vehicle.
+
+</div>
+
+<aside markdown="1">
+Get an individual incident_vehicle relationship:
+
+```bash
+$ curl "http://codeitpolicingapi.cloudapp.net/api/incident_vehicle/1" \
+   -u admin@civica.local:password123 \
+   -s
+```
+
+Response:
+
+```json
+{
+  "Message": "An error has occurred.",
+  "ExceptionMessage": "The underlying provider failed on Open.",
+  "ExceptionType": "System.Data.Entity.Core.EntityException",
+  "StackTrace": "   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()\r\n   at System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)\r\n   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)\r\n   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()\r\n   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()\r\n   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)\r\n   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)\r\n   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)\r\n   at PSNI.IncidentHandler.Domain.Account.LogIn(String email, String password) in C:\\dev\\psniwebapi\\IncidentHandler\\Domain\\Account.cs:line 0\r\n   at PSNI.IncidentHandler.Security.WebApiAuthentication.AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken) in C:\\dev\\psniwebapi\\IncidentHandler\\Security\\WebApiAuthentication.cs:line 47\r\n   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__0.MoveNext()\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()",
+  "InnerException": {
+    "Message": "An error has occurred.",
+    "ExceptionMessage": "Cannot open database \"IncidentHandler\" requested by the login. The login failed.\r\nLogin failed for user 'vm-nidirect\\Administrator'.",
+    "ExceptionType": "System.Data.SqlClient.SqlException",
+    "StackTrace": "   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)\r\n   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)\r\n   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)\r\n   at System.Data.SqlClient.SqlConnection.Open()\r\n   at Glimpse.Ado.AlternateType.GlimpseDbConnection.Open()\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.<Open>b__36(DbConnection t, DbConnectionInterceptionContext c)\r\n   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)\r\n   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.<Open>b__2()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)\r\n   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute(Action operation)\r\n   at System.Data.Entity.Core.EntityClient.EntityConnection.Open()"
+  }
+}
+```
+
+</aside>
+
+    </script>
+    <script src="http://cdostorage.blob.core.windows.net/librarian/0.0.1/librarian.min.js"></script>
+</body>
+</html>

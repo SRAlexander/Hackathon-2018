@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "detailsSearch", component: DetailsComponent },
   { path: "imageSearch", component: ImageComponent },
-  { path: "criminalDetails", component: CriminalViewComponent }
+  { path: "criminalView/:personId", component: CriminalViewComponent }
 ];
 
 @NgModule({

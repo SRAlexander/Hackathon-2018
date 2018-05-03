@@ -11,6 +11,7 @@ import { CriminalViewComponent } from './pages/criminal-view/criminal-view.compo
 import { SharedModule } from './shared/shared.module';
 import { HomeComponent } from './pages/home/home.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { APP_INITIALIZER } from '@angular/core';
 import { AppConfig }       from './app.config';
@@ -34,6 +35,7 @@ function initConfig(config: AppConfig){
     SharedModule,
     AppRoutingModule,
     AngularFontAwesomeModule
+    NgxSpinnerModule
   ],
   providers: [
     AppConfig,

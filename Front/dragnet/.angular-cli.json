@@ -7,11 +7,7 @@
     {
       "root": "src",
       "outDir": "dist",
-      "assets": [
-        "assets",
-        "favicon.ico",
-        "config"
-      ],
+      "assets": ["assets", "favicon.ico", "config"],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -27,7 +23,8 @@
       "scripts": [
         "../node_modules/jquery-slim/dist/jquery.slim.min.js",
         "../node_modules/bootstrap/js/dist/util.js",
-        "../node_modules/bootstrap/js/dist/collapse.js"
+        "../node_modules/bootstrap/js/dist/collapse.js",
+        "../node_modules/bootstrap/js/dist/modal.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
