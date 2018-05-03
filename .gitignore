@@ -1,2 +1,5 @@
-
+.vs
 .DS_Store
+*ncrunch*
+**/bin
+**/obj
