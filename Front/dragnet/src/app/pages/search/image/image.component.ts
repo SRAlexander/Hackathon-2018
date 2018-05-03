@@ -28,12 +28,14 @@ export class ImageComponent implements OnInit {
 
   public submitSnapshot(): void {
     let imageSearchDetails = new ImageSearchDetails();
-    imageSearchDetails.imageDetails = this.webcamImage.imageAsDataUrl;
+    imageSearchDetails.imageDetails = this.webcamImage.imageAsBase64;
     imageSearchDetails.details = "Dummy Information for now";
     this._searchService.searchByImage(imageSearchDetails).subscribe(
       response => {
+        var personGuid = response[0].identifyGuid;
+        var personData = response[0].identityUserData; 
         //let result = response.identityguid;
-        this.router.navigate(["criminalView", { persionId: 1 }]);
+        this.router.navigate(["criminalView", personData, personGuid ]);
       },
       error => {
         console.log(error);

@@ -16,6 +16,11 @@ export class ImageService {
     this._apiLocation = host;
   }
 
+
+  login(name: string){
+
+  }
+  
   //Todo build on this
   private handleError(err: HttpErrorResponse) {
     console.log(err.message);
