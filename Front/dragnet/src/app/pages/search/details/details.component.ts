@@ -1,41 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { SearchDetails } from '../../../shared/models/input/searchDetailsClass';
-import { SearchService } from '../../../shared/services/search.service';
+import { Component, OnInit } from "@angular/core";
+import { SearchDetails } from "../../../shared/models/input/searchDetailsClass";
+import { SearchService } from "../../../shared/services/search.service";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: 'dn-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  selector: "dn-details",
+  templateUrl: "./details.component.html",
+  styleUrls: ["./details.component.css"]
 })
 export class DetailsComponent implements OnInit {
+  model: SearchDetails = new SearchDetails();
 
-  model : SearchDetails = new SearchDetails();
+  constructor(
+    private spinner: NgxSpinnerService,
+    private _searchService: SearchService
+  ) {}
 
-  constructor(private _searchService : SearchService) { 
-
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   submit() {
-    this._searchService.searchByDetails(null)
-    .subscribe(
+    /** spinner starts on init */
+    this.spinner.show();
+    this._searchService.searchByDetails(null).subscribe(
       response => {
-        if (response.length == 1 ){
+        setTimeout(() => {
+          /** spinner ends after 5 seconds */
+          this.spinner.hide();
+        }, 5000);
+
+        if (response.length == 1) {
           //redirect to person
+          console.log("One result");
         }
 
-        if (response.length > 1){
+        if (response.length > 1) {
           //redirect to results view
+          console.log("More than one result");
         }
-
-        console.log("No results")
       },
       error => {
         console.log("Error on details search");
       }
     );
   }
-
 }
