@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRouteSnapshot, ActivatedRoute} from '@angular/router';
 import { DetailsService } from '../../shared/services/details.service';
+import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'dn-criminal-view',
   templateUrl: './criminal-view.component.html',
