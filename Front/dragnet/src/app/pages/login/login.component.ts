@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
     /** spinner starts on init */
     this.spinner.show();
     this._loginService.login("SuperUser").subscribe(
-      response => { this.router.navigate([""]);},
+      response => { this.spinner.hide();
+        this.router.navigate([""]);},
       error => {}
     );
   }

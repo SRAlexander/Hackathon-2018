@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="473fc25e-5c29-4790-8112-d3caa03aa3df" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DragDotNet.Api/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/.idea.DragDotNet.Api/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/pages/criminal-view/criminal-view.component.html" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/pages/criminal-view/criminal-view.component.html" />
+      <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/pages/criminal-view/criminal-view.component.ts" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/pages/criminal-view/criminal-view.component.ts" />
+      <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/pages/login/login.component.ts" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/pages/login/login.component.ts" />
       <change beforePath="$PROJECT_DIR$/Front/dragnet/src/app/shared/services/details.service.ts" afterPath="$PROJECT_DIR$/Front/dragnet/src/app/shared/services/details.service.ts" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +31,8 @@
       <file leaf-file-name="ScoundrelsController.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="46" column="57" lean-forward="false" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="57" />
+            <state relative-caret-position="287">
+              <caret line="45" column="12" lean-forward="false" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="12" />
               <folding>
                 <marker date="1525362983016" expanded="true" signature="36:2063" ph="{...}" />
                 <marker date="1525362983016" expanded="false" signature="49:163" ph="..." />
@@ -102,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PoliceApiClient.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PoliceApiClient.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/PoliceApiClient.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="52" column="76" lean-forward="true" selection-start-line="52" selection-start-column="76" selection-end-line="52" selection-end-column="76" />
+            <state relative-caret-position="555">
+              <caret line="42" column="12" lean-forward="false" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
               <folding>
                 <marker date="1525362983017" expanded="true" signature="24:3948" ph="{...}" />
                 <marker date="1525362983017" expanded="false" signature="37:171" ph="..." />
@@ -128,7 +129,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImageIdentifyApi.cs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ImageIdentifyApi.cs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="585">
@@ -197,7 +198,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
+    <option name="y" value="53" />
     <option name="width" value="1680" />
     <option name="height" value="1027" />
   </component>
@@ -294,12 +295,12 @@
       <updated>1525352256718</updated>
       <workItem from="1525352258976" duration="2561000" />
       <workItem from="1525356765734" duration="1145000" />
-      <workItem from="1525363036654" duration="1054000" />
+      <workItem from="1525363036654" duration="2542000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5829000" />
+    <option name="totallyTimeSpent" value="7317000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -327,7 +328,7 @@
       <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -349,32 +350,6 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs</url>
-          <line>21</line>
-          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" initialLine="21">
-            <startOffsets>
-              <startOffset value="600" />
-            </startOffsets>
-            <endOffsets>
-              <endOffset value="672" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs</url>
-          <line>43</line>
-          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" initialLine="43">
-            <startOffsets>
-              <startOffset value="1591" />
-            </startOffsets>
-            <endOffsets>
-              <endOffset value="1671" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs</url>
           <line>45</line>
           <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs" initialLine="45">
             <startOffsets>
@@ -384,49 +359,10 @@
               <endOffset value="2066" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs</url>
-          <line>56</line>
-          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" initialLine="37">
-            <startOffsets>
-              <startOffset value="2043" />
-            </startOffsets>
-            <endOffsets>
-              <endOffset value="2045" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs</url>
-          <line>45</line>
-          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs" initialLine="45">
-            <startOffsets>
-              <startOffset value="1491" />
-            </startOffsets>
-            <endOffsets>
-              <endOffset value="1566" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/DragDotNet.Api/PoliceApiClient.cs</url>
-          <line>42</line>
-          <properties documentPath="$PROJECT_DIR$/DragDotNet.Api/PoliceApiClient.cs" initialLine="42">
-            <startOffsets>
-              <startOffset value="1661" />
-            </startOffsets>
-            <endOffsets>
-              <endOffset value="1762" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="6" />
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1100,29 +1036,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="45" column="20" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="20" />
-          <folding>
-            <marker date="1525356588283" expanded="false" signature="6:54" ph="..." />
-            <marker date="1525356588283" expanded="true" signature="80:2143" ph="{...}" />
-            <marker date="1525356588283" expanded="false" signature="93:227" ph="..." />
-            <marker date="1525356588283" expanded="true" signature="262:2141" ph="{...}" />
-            <marker date="1525356588283" expanded="true" signature="577:2135" ph="{...}" />
-            <marker date="1525356588283" expanded="true" signature="1108:2098" ph="{...}" />
-            <marker date="1525356588283" expanded="true" signature="1262:1391" ph="{...}" />
-            <marker date="1525356588283" expanded="true" signature="1412:2084" ph="{...}" />
-            <marker date="1525356588283" expanded="true" signature="1812:2065" ph="{...}" />
-            <marker date="1525356588283" expanded="true" signature="1882:2043" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DragDotNet.Api/Controllers/ScoundrelsController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="46" column="57" lean-forward="false" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="57" />
+        <state relative-caret-position="287">
+          <caret line="45" column="12" lean-forward="false" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="12" />
           <folding>
             <marker date="1525362983016" expanded="true" signature="36:2063" ph="{...}" />
             <marker date="1525362983016" expanded="false" signature="49:163" ph="..." />
@@ -1139,8 +1056,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DragDotNet.Api/PoliceApiClient.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="52" column="76" lean-forward="true" selection-start-line="52" selection-start-column="76" selection-end-line="52" selection-end-column="76" />
+        <state relative-caret-position="555">
+          <caret line="42" column="12" lean-forward="false" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
           <folding>
             <marker date="1525362983017" expanded="true" signature="24:3948" ph="{...}" />
             <marker date="1525362983017" expanded="false" signature="37:171" ph="..." />
@@ -1157,6 +1074,25 @@
             <marker date="1525362983017" expanded="true" signature="3314:3930" ph="{...}" />
             <marker date="1525362983017" expanded="true" signature="3402:3916" ph="{...}" />
             <marker date="1525362983017" expanded="true" signature="3630:3898" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DragDotNet.Api/ImageIdentifyApi.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="45" column="20" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="20" />
+          <folding>
+            <marker date="1525356588283" expanded="false" signature="6:54" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="80:2143" ph="{...}" />
+            <marker date="1525356588283" expanded="false" signature="93:227" ph="..." />
+            <marker date="1525356588283" expanded="true" signature="262:2141" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="577:2135" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1108:2098" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1262:1391" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1412:2084" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1812:2065" ph="{...}" />
+            <marker date="1525356588283" expanded="true" signature="1882:2043" ph="{...}" />
           </folding>
         </state>
       </provider>

@@ -21,9 +21,11 @@ export class DetailsService {
     let headers = new HttpHeaders({ "Content-Type": "application/json" });
     let options = { headers: headers};
 
+    let calcInt = parseInt(JSON.parse(details.policeId.replace(/'/g, "\"")).id) + 103;
+    console.log(calcInt);
     console.log(details.policeId.replace("'", "\""));
     return this._http
-      .get<any>(this._apiLocation + "Get-Scoundrel?policeId=" + JSON.parse(details.policeId.replace(/'/g, "\"")).id, options)
+      .get<any>(this._apiLocation + "Get-Scoundrel?policeId=" + calcInt, options)
       .do(data => {
         //TODO What?
       })
